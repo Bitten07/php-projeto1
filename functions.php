@@ -1,5 +1,9 @@
 <?php
 
+function separador() {
+    return str_repeat("-", 150) . "\n";
+}
+
 function gerarID(array $a)
 {
     if (empty($a)) {
@@ -12,7 +16,7 @@ function gerarID(array $a)
 function listarLivros(array $a)
 {
 
-    echo str_repeat("-", 150) . "\n";
+    echo separador();
     foreach ($a as $vs => $v) {
         foreach ($v as $k => $l) {
             if (is_bool($l)) {
@@ -23,14 +27,11 @@ function listarLivros(array $a)
         }
         echo "\n";
     }
-    echo str_repeat("-", 150) . "\n";
 }
 
 function cadastrarLivro(array &$a)
 {
-    echo str_repeat("-", 70) . "\n";
-
-    if (trim(readline("Tem certeza que deseja cadastrar um novo livro? (s/n): ")) === 's') {
+    echo separador();
 
         echo "Insira os dados do novo livro: \n";
 
@@ -39,6 +40,8 @@ function cadastrarLivro(array &$a)
         $paginas = trim(readline("Número de páginas: "));
         $lido = trim(readline("Lido? (s/n): "));
         $lido = strtolower($lido) === 's' ? true : false;
+    
+    if (trim(readline("Tem certeza que deseja cadastrar um novo livro? (s/n): ")) === 's') {
 
         $novoLivro = [
             'ID' => gerarID($a),
@@ -53,12 +56,11 @@ function cadastrarLivro(array &$a)
     } else {
         echo "Cadastro cancelado. \n";
     }
-    echo str_repeat("-", 150) . "\n";
 }
 
 function removerLivro(array &$a)
 {
-    echo str_repeat("-", 150) . "\n";
+    echo separador();
 
     $id = trim(readline("Digite o ID do livro a ser removido: "));
     $encontrado = false;
@@ -82,9 +84,6 @@ function removerLivro(array &$a)
     if (!$encontrado) {
         echo "Livro com ID $id não encontrado.\n";
     }
-
-
-    echo str_repeat("-", 150) . "\n";
 }
 
 function buscarLivro(array $a)
@@ -93,17 +92,38 @@ function buscarLivro(array $a)
     $termo = trim(readline("Digite o título ou autor para buscar: "));
     $resultados = [];
     foreach ($a as $livro) {
-        if (stripos($livro['titulo'], $termo) == true || stripos($livro['autor'], $termo) == true) {
+        if (stripos($livro['titulo'], $termo) !== false || stripos($livro['autor'], $termo) !== false) {
             array_push($resultados, $livro);
         }
     }
 
     if (empty($resultados)) {
-        echo str_repeat("-", 150) . "\n";
+        echo separador();
         echo "Nenhum livro encontrado.\n";
         return;
-        echo str_repeat("-", 150) . "\n";
     }
 
     listarLivros($resultados);
+}
+
+function editarLivro(array &$a)
+{
+    echo separador();
+    $id = trim(readline("Digite o ID do livro a ser editado: "));
+
+    foreach ($a as $index => $livro) {
+        if ($livro['ID'] == $id) {
+            echo "Editando o livro '{$livro['titulo']}': \n";
+            
+            do {
+                $campo = trim(readline("Qual campo editar? (titulo, autor, paginas, lido): "));
+                
+                $novoValor = trim(readline("Insira o novo {$campo}: "));
+                $a[$index][$campo] = $novoValor;
+
+                $continuar = trim(readline("Editar outro campo? (s/n): "));
+
+            } while ($continuar === 's');
+        }
+    }
 }

@@ -12,6 +12,7 @@ $livros = [
 
 while (true) {
 
+    echo separador();
     // Mostar opçõess
     echo "Escolha uma opção: \n";
     echo "1 - Cadastrar livro | 2 - Listar livros | 3 - Buscar \n4 - Editar | 5 - Remover | 6 - Estatísticas | 0 - Sair \n";
@@ -28,8 +29,7 @@ while (true) {
             buscarLivro($livros);
             break;
         case '4':
-            #editarLivro($livros);
-            echo "Em breve... \n";
+            editarLivro($livros);
             break;
         case '5':
             removerLivro($livros);

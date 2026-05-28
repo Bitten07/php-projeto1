@@ -35,8 +35,7 @@ while (true) {
             removerLivro($livros);
             break;
         case '6':
-            #estatisticas($livros);
-            echo "Em breve... \n";
+            estatisticas($livros);
             break;
         case '0':
             echo "Saindo do sistema...\n";

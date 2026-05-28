@@ -118,12 +118,38 @@ function editarLivro(array &$a)
             do {
                 $campo = trim(readline("Qual campo editar? (titulo, autor, paginas, lido): "));
                 
+                if (!in_array($campo, ['titulo', 'autor', 'paginas', 'lido'])) {
+                    echo "Campo inválido.\n";
+                    break;
+                }
+                
                 $novoValor = trim(readline("Insira o novo {$campo}: "));
                 $a[$index][$campo] = $novoValor;
+                if ($campo === 'paginas') $novoValor = (int) $novoValor;
+                if ($campo === 'lido') $novoValor = strtolower($novoValor) === 's' ? true : false;
 
                 $continuar = trim(readline("Editar outro campo? (s/n): "));
 
             } while ($continuar === 's');
         }
     }
+    if ($livro['ID'] != $id) {
+        echo "ID inválido!\n";
+    }
+}
+
+function estatisticas($a) {
+    echo separador();
+
+    // Total de livros
+    echo "O sistema tem um total de: " . count($a) . " cadastrados\n";
+
+    // Livros lidos/nao lidos
+    $lidos = [];
+    $nlidos = [];
+
+    foreach ($a as $index => $livro){
+        
+    }
+
 }

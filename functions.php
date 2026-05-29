@@ -17,10 +17,12 @@ function listarLivros(array $a)
 {
 
     echo separador();
+    
+    usort($a, fn($x, $y) => strcasecmp($x['titulo'], $y['titulo']));
     foreach ($a as $vs => $v) {
         foreach ($v as $k => $l) {
             if (is_bool($l)) {
-                echo " " . ucfirst($k) . ": " . $l = $l ? "Sim" : "Não" . " - ";
+                echo " " . ucfirst($k) . ": " . $l = ($l ? "Sim" : "Não") . " - ";
             } else {
                 echo " " . ucfirst($k) . ": " . $l . " - ";
             }
@@ -40,7 +42,11 @@ function cadastrarLivro(array &$a)
         $paginas = trim(readline("Número de páginas: "));
         $lido = trim(readline("Lido? (s/n): "));
         $lido = strtolower($lido) === 's' ? true : false;
-    
+
+        if (empty($titulo) || empty($autor) || (int)$paginas <= 0) {
+            echo "Dados inválidos. Cadastro cancelado.\n";
+            return;
+        }
     if (trim(readline("Tem certeza que deseja cadastrar um novo livro? (s/n): ")) === 's') {
 
         $novoLivro = [
@@ -123,7 +129,12 @@ function editarLivro(array &$a)
                     break;
                 }
                 
-                $novoValor = trim(readline("Insira o novo {$campo}: "));
+                $novoValor = trim(readline("Insira o novo {$campo} [{$a[$index][$campo]}]: "));
+
+                if ($novoValor === '') {
+                    echo "Valor mantido.\n";
+                    continue;
+                }
                 if ($campo === 'paginas') $novoValor = (int) $novoValor;
                 if ($campo === 'lido') $novoValor = strtolower($novoValor) === 's' ? true : false;
                 $a[$index][$campo] = $novoValor;
@@ -141,7 +152,7 @@ function editarLivro(array &$a)
 function estatisticas($a) {
     echo separador();
 
-    echo "ESTATÍSTCAS GERAIS";
+    echo "ESTATÍSTCAS GERAIS\n";
 
     // Total de livros
     echo "O sistema tem um total de: " . count($a) . " livros cadastrados\n";
@@ -161,7 +172,6 @@ function estatisticas($a) {
     echo "Livros lidos: " . count($lidos) . "\nLivros não lidos: " . count($nlidos) . "\n";
 
     // Livro com mais páginas
-    $maiorPagina = 0;
 
     $maiorPaginas = max(array_column($a, 'paginas'));
     foreach ($a as $livro) {

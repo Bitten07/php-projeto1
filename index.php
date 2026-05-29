@@ -17,7 +17,7 @@ while (true) {
     echo separador();
     // Mostar opçõess
     echo "Escolha uma opção: \n";
-    echo "1 - Cadastrar livro | 2 - Listar livros | 3 - Buscar 4 - Editar | \n5 - Remover | 6 - Estatísticas | 7 - Histórico | 0 - Sair \n";
+    echo "| 1 - Cadastrar livro | 2 - Listar livros | 3 - Buscar | 4 - Editar | \n| 5 - Remover | 6 - Estatísticas | 7 - Histórico | 0 - Sair |\n";
 
     $opcao = trim(readline("Opção: "));
     switch ($opcao) {

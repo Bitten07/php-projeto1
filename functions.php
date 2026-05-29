@@ -149,6 +149,7 @@ function editarLivro(array &$a, array &$historico)
                 if ($campo === 'paginas') $novoValor = (int) $novoValor;
                 if ($campo === 'lido') $novoValor = strtolower($novoValor) === 's' ? true : false;
                 $a[$index][$campo] = $novoValor;
+                registrarHistorico($historico, 'Editar', $a[$index]['titulo']);
 
                 $continuar = trim(readline("Editar outro campo? (s/n): "));
 
@@ -158,7 +159,6 @@ function editarLivro(array &$a, array &$historico)
     if ($livro['ID'] != $id) {
         echo "ID inválido!\n";
     }
-    registrarHistorico($historico, 'Editar', $livro['titulo']);
 }
 
 function estatisticas($a) {
@@ -198,6 +198,7 @@ function exibirHistorico(array $h) {
     echo separador();
     if (empty($h)) {
         echo "Sem histórico recente\n";
+        return;
     }
 
     foreach ($h as $entrada) {

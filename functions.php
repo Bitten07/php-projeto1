@@ -4,6 +4,14 @@ function separador() {
     return str_repeat("-", 150) . "\n";
 }
 
+function registrarHistorico(array &$h, $acao, $titulo){
+    $h[] = [
+        'acao'  => $acao,
+        'livro' => $titulo,
+        'hora'  => date('d/m/Y H:i:s')
+    ];
+}
+
 function gerarID(array $a)
 {
     if (empty($a)) {
@@ -31,7 +39,7 @@ function listarLivros(array $a)
     }
 }
 
-function cadastrarLivro(array &$a)
+function cadastrarLivro(array &$a, array &$historico)
 {
     echo separador();
 
@@ -59,12 +67,14 @@ function cadastrarLivro(array &$a)
         array_push($a, $novoLivro);
 
         echo "Livro cadastrado com sucesso! \n";
+        registrarHistorico($historico, 'Cadastro', $titulo);
     } else {
         echo "Cadastro cancelado. \n";
     }
+
 }
 
-function removerLivro(array &$a)
+function removerLivro(array &$a, array &$historico)
 {
     echo separador();
 
@@ -80,6 +90,7 @@ function removerLivro(array &$a)
             if ($confirma === 's') {
                 array_splice($a, $index, 1);
                 echo "Livro removido com sucesso!\n";
+                registrarHistorico($historico, 'Remover', $livro['titulo']);
             } else {
                 echo "Remoção cancelada.\n";
             }
@@ -112,7 +123,7 @@ function buscarLivro(array $a)
     listarLivros($resultados);
 }
 
-function editarLivro(array &$a)
+function editarLivro(array &$a, array &$historico)
 {
     echo separador();
     $id = trim(readline("Digite o ID do livro a ser editado: "));
@@ -147,6 +158,7 @@ function editarLivro(array &$a)
     if ($livro['ID'] != $id) {
         echo "ID inválido!\n";
     }
+    registrarHistorico($historico, 'Editar', $livro['titulo']);
 }
 
 function estatisticas($a) {
@@ -180,4 +192,15 @@ function estatisticas($a) {
         break;
     }
 }
+}
+
+function exibirHistorico(array $h) {
+    echo separador();
+    if (empty($h)) {
+        echo "Sem histórico recente\n";
+    }
+
+    foreach ($h as $entrada) {
+         echo "[{$entrada['hora']}] [{$entrada['acao']}] [{$entrada['livro']}]\n";
+    }
 }

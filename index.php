@@ -10,17 +10,19 @@ $livros = [
     ['ID' => 4, 'titulo' => 'Signo dos Quatro', 'autor' => 'Árthur Conan Doyle', 'paginas' => 144, 'lido' => true]
 ];
 
+$historico = [];
+
 while (true) {
 
     echo separador();
     // Mostar opçõess
     echo "Escolha uma opção: \n";
-    echo "1 - Cadastrar livro | 2 - Listar livros | 3 - Buscar \n4 - Editar | 5 - Remover | 6 - Estatísticas | 0 - Sair \n";
+    echo "1 - Cadastrar livro | 2 - Listar livros | 3 - Buscar 4 - Editar | \n5 - Remover | 6 - Estatísticas | 7 - Histórico | 0 - Sair \n";
 
     $opcao = trim(readline("Opção: "));
     switch ($opcao) {
         case '1':
-            cadastrarLivro($livros);
+            cadastrarLivro($livros, $historico);
             break;
         case '2':
             listarLivros($livros);
@@ -29,13 +31,16 @@ while (true) {
             buscarLivro($livros);
             break;
         case '4':
-            editarLivro($livros);
+            editarLivro($livros, $historico);
             break;
         case '5':
-            removerLivro($livros);
+            removerLivro($livros, $historico);
             break;
         case '6':
             estatisticas($livros);
+            break;
+        case '7':
+            exibirHistorico($historico);
             break;
         case '0':
             echo "Saindo do sistema...\n";

@@ -124,9 +124,9 @@ function editarLivro(array &$a)
                 }
                 
                 $novoValor = trim(readline("Insira o novo {$campo}: "));
-                $a[$index][$campo] = $novoValor;
                 if ($campo === 'paginas') $novoValor = (int) $novoValor;
                 if ($campo === 'lido') $novoValor = strtolower($novoValor) === 's' ? true : false;
+                $a[$index][$campo] = $novoValor;
 
                 $continuar = trim(readline("Editar outro campo? (s/n): "));
 
@@ -141,15 +141,33 @@ function editarLivro(array &$a)
 function estatisticas($a) {
     echo separador();
 
+    echo "ESTATÍSTCAS GERAIS";
+
     // Total de livros
-    echo "O sistema tem um total de: " . count($a) . " cadastrados\n";
+    echo "O sistema tem um total de: " . count($a) . " livros cadastrados\n";
 
     // Livros lidos/nao lidos
     $lidos = [];
     $nlidos = [];
 
     foreach ($a as $index => $livro){
-        
+        if($livro['lido'] == true) {
+            array_push($lidos, $livro);
+        } else {
+            array_push($nlidos, $livro);
+        }
     }
+    
+    echo "Livros lidos: " . count($lidos) . "\nLivros não lidos: " . count($nlidos) . "\n";
 
+    // Livro com mais páginas
+    $maiorPagina = 0;
+
+    $maiorPaginas = max(array_column($a, 'paginas'));
+    foreach ($a as $livro) {
+    if ($livro['paginas'] === $maiorPaginas) {
+        echo "Livro com mais páginas: {$livro['titulo']}({$maiorPaginas} páginas)\n";
+        break;
+    }
+}
 }

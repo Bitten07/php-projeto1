@@ -1,10 +1,12 @@
 <?php
 
-function separador() {
-    return str_repeat("-", 150) . "\n";
+function separador()
+{
+    return str_repeat("-", 100) . "\n";
 }
 
-function registrarHistorico(array &$h, $acao, $titulo){
+function registrarHistorico(array &$h, $acao, $titulo)
+{
     $h[] = [
         'acao'  => $acao,
         'livro' => $titulo,
@@ -25,7 +27,7 @@ function listarLivros(array $a)
 {
 
     echo separador();
-    
+
     usort($a, fn($x, $y) => strcasecmp($x['titulo'], $y['titulo']));
     foreach ($a as $vs => $v) {
         foreach ($v as $k => $l) {
@@ -43,18 +45,18 @@ function cadastrarLivro(array &$a, array &$historico)
 {
     echo separador();
 
-        echo "Insira os dados do novo livro: \n";
+    echo "Insira os dados do novo livro: \n";
 
-        $titulo = trim(readline("Título: "));
-        $autor = trim(readline("Autor: "));
-        $paginas = trim(readline("Número de páginas: "));
-        $lido = trim(readline("Lido? (s/n): "));
-        $lido = strtolower($lido) === 's' ? true : false;
+    $titulo = trim(readline("Título: "));
+    $autor = trim(readline("Autor: "));
+    $paginas = trim(readline("Número de páginas: "));
+    $lido = trim(readline("Lido? (s/n): "));
+    $lido = strtolower($lido) === 's' ? true : false;
 
-        if (empty($titulo) || empty($autor) || (int)$paginas <= 0) {
-            echo "Dados inválidos. Cadastro cancelado.\n";
-            return;
-        }
+    if (empty($titulo) || empty($autor) || (int)$paginas <= 0) {
+        echo "Dados inválidos. Cadastro cancelado.\n";
+        return;
+    }
     if (trim(readline("Tem certeza que deseja cadastrar um novo livro? (s/n): ")) === 's') {
 
         $novoLivro = [
@@ -71,7 +73,6 @@ function cadastrarLivro(array &$a, array &$historico)
     } else {
         echo "Cadastro cancelado. \n";
     }
-
 }
 
 function removerLivro(array &$a, array &$historico)
@@ -131,15 +132,15 @@ function editarLivro(array &$a, array &$historico)
     foreach ($a as $index => $livro) {
         if ($livro['ID'] == $id) {
             echo "Editando o livro '{$livro['titulo']}': \n";
-            
+
             do {
                 $campo = trim(readline("Qual campo editar? (titulo, autor, paginas, lido): "));
-                
+
                 if (!in_array($campo, ['titulo', 'autor', 'paginas', 'lido'])) {
                     echo "Campo inválido.\n";
                     break;
                 }
-                
+
                 $novoValor = trim(readline("Insira o novo {$campo} [{$a[$index][$campo]}]: "));
 
                 if ($novoValor === '') {
@@ -152,7 +153,6 @@ function editarLivro(array &$a, array &$historico)
                 registrarHistorico($historico, 'Editar', $a[$index]['titulo']);
 
                 $continuar = trim(readline("Editar outro campo? (s/n): "));
-
             } while ($continuar === 's');
         }
     }
@@ -161,7 +161,8 @@ function editarLivro(array &$a, array &$historico)
     }
 }
 
-function estatisticas($a) {
+function estatisticas($a)
+{
     echo separador();
 
     echo "ESTATÍSTCAS GERAIS\n";
@@ -173,28 +174,29 @@ function estatisticas($a) {
     $lidos = [];
     $nlidos = [];
 
-    foreach ($a as $index => $livro){
-        if($livro['lido'] == true) {
+    foreach ($a as $index => $livro) {
+        if ($livro['lido'] == true) {
             array_push($lidos, $livro);
         } else {
             array_push($nlidos, $livro);
         }
     }
-    
+
     echo "Livros lidos: " . count($lidos) . "\nLivros não lidos: " . count($nlidos) . "\n";
 
     // Livro com mais páginas
 
     $maiorPaginas = max(array_column($a, 'paginas'));
     foreach ($a as $livro) {
-    if ($livro['paginas'] === $maiorPaginas) {
-        echo "Livro com mais páginas: {$livro['titulo']}({$maiorPaginas} páginas)\n";
-        break;
+        if ($livro['paginas'] === $maiorPaginas) {
+            echo "Livro com mais páginas: {$livro['titulo']}({$maiorPaginas} páginas)\n";
+            break;
+        }
     }
 }
-}
 
-function exibirHistorico(array $h) {
+function exibirHistorico(array $h)
+{
     echo separador();
     if (empty($h)) {
         echo "Sem histórico recente\n";
@@ -202,6 +204,6 @@ function exibirHistorico(array $h) {
     }
 
     foreach ($h as $entrada) {
-         echo "[{$entrada['hora']}] [{$entrada['acao']}] [{$entrada['livro']}]\n";
+        echo "[{$entrada['hora']}] [{$entrada['acao']}] [{$entrada['livro']}]\n";
     }
 }

@@ -133,6 +133,7 @@ function editarLivro(array &$a, array &$historico)
         if ($livro['ID'] == $id) {
             echo "Editando o livro '{$livro['titulo']}': \n";
 
+            $continuar = 's';
             do {
                 $campo = trim(readline("Qual campo editar? (titulo, autor, paginas, lido): "));
 
